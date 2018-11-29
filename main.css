@@ -1,0 +1,20 @@
+html,body{
+  height: 100%;
+}
+
+#main{
+  height: 80%;
+}
+
+#bar{
+  background-color: lightgrey;
+  height: 20%;
+}
+
+#blocks {
+  background-color: lightblue;
+}
+
+#network {
+  background-color: lightgreen;
+}
