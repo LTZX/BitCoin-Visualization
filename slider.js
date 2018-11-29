@@ -1,9 +1,29 @@
-var formatDateIntoYear = d3.timeFormat("%Y");
+// var formatDateIntoYear = d3.timeFormat("HH:mm:ss");
 var formatDate = d3.timeFormat("%b %Y");
-var parseDate = d3.timeParse("%m/%d/%y");
 
-var startDate = new Date("2004-11-01"),
-    endDate = new Date("2017-04-01");
+function timeFormat(date, second) {
+  var hh = date.getUTCHours();
+  var mm = date.getUTCMinutes();
+  var ss = date.getSeconds();
+  // If you were building a timestamp instead of a duration, you would uncomment the following line to get 12-hour (not 24) time
+  // if (hh > 12) {hh = hh % 12;}
+  // These lines ensure you have two-digits
+  if (hh < 10) {hh = "0"+hh;}
+  if (mm < 10) {mm = "0"+mm;}
+  if (ss < 10) {ss = "0"+ss;}
+  // This formats your string to HH:MM:SS
+  var t = hh+":"+mm;
+  if(second) {
+    var t = t + ":"+ss;
+  }
+  return t;
+}
+
+var startDate = new Date(2018, 11, 24, 10, 33, 30),
+    endDate = new Date(2018, 11, 24, 11, 33, 30);;
+
+console.log(startDate)
+console.log(endDate)
 
 var margin = {top:40, right:20, bottom:0, left:50},
     width = document.getElementById('sliderDiv').offsetWidth - margin.left - margin.right,
@@ -58,7 +78,7 @@ slider.insert("g", ".track-overlay")
     .attr("x", x)
     .attr("y", 10)
     .attr("text-anchor", "middle")
-    .text(function(d) { return formatDateIntoYear(d); });
+    .text(function(d) { return timeFormat(d, false); });
 
 var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
@@ -67,7 +87,7 @@ var handle = slider.insert("circle", ".track-overlay")
 var label = slider.append("text")
     .attr("class", "label")
     .attr("text-anchor", "middle")
-    .text(formatDate(startDate))
+    .text(timeFormat(startDate, true))
     .attr("transform", "translate(0," + (-25) + ")")
 
 
@@ -147,7 +167,7 @@ function update(h) {
   handle.attr("cx", x(h));
   label
     .attr("x", x(h))
-    .text(formatDate(h));
+    .text(timeFormat(h, true));
 
   // filter data set and redraw plot
   // var newData = dataset.filter(function(d) {
