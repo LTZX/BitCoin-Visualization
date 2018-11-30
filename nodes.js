@@ -47,7 +47,7 @@ d3.json("data.json", function(error, data) {
         .attr("height", nodeheight)
 
     const link = network.append("g")
-        .attr("stroke", "#999")
+        .attr("stroke", "#66ccff")
         .attr("stroke-opacity", 0.6)
       .selectAll("line")
       .data(links)
@@ -62,7 +62,13 @@ d3.json("data.json", function(error, data) {
       .data(nodes)
       .enter().append("circle")
         .attr("r", 5)
-        .attr("fill", function(d){ return color(d.group); })
+        .attr("fill", function(d){
+          if(d.group == 0) {
+            return "#ffa64d";
+          } else {
+            return "#b3b3b3";
+          }
+        })
         .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
         .call(drag(simulation));
 
