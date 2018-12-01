@@ -1,17 +1,10 @@
-// var formatDateIntoYear = d3.timeFormat("HH:mm:ss");
-var formatDate = d3.timeFormat("%b %Y");
-
 function timeFormat(date, second) {
   var hh = date.getUTCHours();
   var mm = date.getUTCMinutes();
   var ss = date.getSeconds();
-  // If you were building a timestamp instead of a duration, you would uncomment the following line to get 12-hour (not 24) time
-  // if (hh > 12) {hh = hh % 12;}
-  // These lines ensure you have two-digits
   if (hh < 10) {hh = "0"+hh;}
   if (mm < 10) {mm = "0"+mm;}
   if (ss < 10) {ss = "0"+ss;}
-  // This formats your string to HH:MM:SS
   var t = hh+":"+mm;
   if(second) {
     var t = t + ":"+ss;
@@ -22,9 +15,6 @@ function timeFormat(date, second) {
 var startDate = new Date(2018, 11, 24, 10, 33, 30),
     endDate = new Date(2018, 11, 24, 11, 33, 30);;
 
-console.log(startDate)
-console.log(endDate)
-
 var margin = {top:40, right:20, bottom:0, left:50},
     width = document.getElementById('sliderDiv').offsetWidth - margin.left - margin.right,
     height = document.getElementById('sliderDiv').offsetHeight - margin.top - margin.bottom;
@@ -34,8 +24,6 @@ var svg = d3.select("#sliderDiv")
     .attr("id","slider")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
-
-////////// slider //////////
 
 var moving = false;
 var currentValue = 0;
@@ -90,12 +78,6 @@ var label = slider.append("text")
     .text(timeFormat(startDate, true))
     .attr("transform", "translate(0," + (-25) + ")")
 
-
-////////// plot //////////
-
-// var dataset;
-
-
 // d3.csv("circles.csv", prepare, function(data) {
   // dataset = data;
   // drawPlot(dataset);
@@ -106,7 +88,6 @@ var label = slider.append("text")
     if (button.text() == "Pause") {
       moving = false;
       clearInterval(timer);
-      // timer = 0;
       button.text("Play");
     } else {
       moving = true;
@@ -114,15 +95,39 @@ var label = slider.append("text")
       button.text("Pause");
     }
   })
-    // console.log("Slider moving: " + moving);
-//   })
-// })
 
-// function prepare(d) {
-//   d.id = d.id;
-//   d.date = parseDate(d.date);
-//   return d;
-// }
+function updateNodes(remove) {
+
+  if(remove) {
+    var random = Math.floor(Math.random() * 40) + 1;
+    for(var i = 0; i < random; i++) {
+      var randomIndex = Math.floor(Math.random() * links.length);
+      links.splice(randomIndex,1);
+    }
+  }
+
+  var random = Math.floor(Math.random() * 5) + 1;
+  for(var i = 0; i < random; i++) {
+    var ids = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+    var randomIndex = Math.floor(Math.random() * ids.length);
+    var from = ids[randomIndex];
+    randomIndex = Math.floor(Math.random() * ids.length);
+    var to = ids[randomIndex];
+    var value = Math.floor(Math.random() * 10) + 1;
+    links.push({"source": nodesmap[from], "target": nodesmap[to], "value": value})
+  }
+
+  var newlinks = d3.selectAll("line")
+        .data(links)
+        .enter().append("line")
+          .attr("class", "link")
+          .attr("stroke", "#66ccff")
+          .attr("stroke-opacity", 0.6)
+          .attr("stroke-width", d => Math.sqrt(d.value))
+          .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")");
+  newlinks.exit().remove();
+
+}
 
 function step() {
   update(x.invert(currentValue));
@@ -131,47 +136,22 @@ function step() {
     moving = false;
     currentValue = 0;
     clearInterval(timer);
-    // timer = 0;
     playButton.text("Play");
     console.log("Slider moving: " + moving);
   }
 }
 
-// function drawPlot(data) {
-//   var locations = plot.selectAll(".location")
-//     .data(data);
-//
-//   // if filtered dataset has more circles than already existing, transition new ones in
-//   locations.enter()
-//     .append("circle")
-//     .attr("class", "location")
-//     .attr("cx", function(d) { return x(d.date); })
-//     .attr("cy", height/2)
-//     .style("fill", function(d) { return d3.hsl(d.date/1000000000, 0.8, 0.8)})
-//     .style("stroke", function(d) { return d3.hsl(d.date/1000000000, 0.7, 0.7)})
-//     .style("opacity", 0.5)
-//     .attr("r", 8)
-//       .transition()
-//       .duration(400)
-//       .attr("r", 25)
-//         .transition()
-//         .attr("r", 8);
-//
-//   // if filtered dataset has less circles than already existing, remove excess
-//   locations.exit()
-//     .remove();
-// }
-
 function update(h) {
-  // update position and text of label according to slider scale
+  var count = Math.round(x(h)/targetValue*151) % 5
+
   handle.attr("cx", x(h));
   label
     .attr("x", x(h))
     .text(timeFormat(h, true));
 
-  // filter data set and redraw plot
-  // var newData = dataset.filter(function(d) {
-  //   return d.date < h;
-  // })
-  // drawPlot(newData);
+  if(count == "4") {
+    updateNodes(true);
+  } else {
+    updateNodes(false);
+  }
 }
