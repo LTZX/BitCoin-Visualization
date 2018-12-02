@@ -113,25 +113,31 @@ function updateNodes(remove) {
     var from = ids[randomIndex];
     randomIndex = Math.floor(Math.random() * ids.length);
     var to = ids[randomIndex];
+    if(from === to) {
+      continue;
+    }
     var value = Math.floor(Math.random() * 10) + 1;
     links.push({"source": nodesmap[from], "target": nodesmap[to], "value": value})
   }
 
-  var newlinks = d3.selectAll("line")
+  var newlinks = network.select("g").selectAll(".link")
         .data(links)
-        .enter().append("line")
+
+  newlinks.enter().append("line")
           .attr("class", "link")
           .attr("stroke", "#66ccff")
           .attr("stroke-opacity", 0.6)
           .attr("stroke-width", d => Math.sqrt(d.value))
-          .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")");
+          .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
   newlinks.exit().remove();
 
+  simulation.force("link", d3.forceLink(links).id(d => d.id));
+  simulation.alpha(0.8).restart();
 }
 
 function step() {
   update(x.invert(currentValue));
-  currentValue = currentValue + (targetValue/151);
+  currentValue = currentValue + (targetValue/50);
   if (currentValue > targetValue) {
     moving = false;
     currentValue = 0;

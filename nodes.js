@@ -32,25 +32,22 @@ function forceSimulation(nodes, links) {
 
 var links = [], nodes = [];
 var nodesmap = {};
+var simulation;
 var nodewith = document.getElementById('network').offsetWidth;
 var nodeheight = document.getElementById('network').offsetHeight;
+var network = d3.select("#network")
+    .append("svg")
+    .attr("width", nodewith)
+    .attr("height", nodeheight)
 
 d3.json("data.json", function(error, data) {
     if (error) throw error;
 
     nodes = data.nodes;
     links = data.links;
-    nodes.map(function(d){
-      nodesmap[d.id] = d;
-    });
-    const simulation = forceSimulation(nodes, links).on("tick", ticked);
+    nodes.map(function(d){ nodesmap[d.id] = d; });
+    simulation = forceSimulation(nodes, links).on("tick", ticked);
     var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-    var network = d3.select("#network")
-        .append("svg")
-        .attr("width", nodewith)
-        .attr("height", nodeheight)
-
     const link = network.append("g")
       .selectAll("line")
       .data(links)
@@ -81,7 +78,7 @@ d3.json("data.json", function(error, data) {
         .text(d => d.id);
 
     function ticked() {
-      link
+      network.select("g").selectAll(".link")
           .attr("x1", d => d.source.x)
           .attr("y1", d => d.source.y)
           .attr("x2", d => d.target.x)
