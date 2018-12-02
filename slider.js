@@ -51,8 +51,16 @@ slider.append("line")
     .call(d3.drag()
         .on("start.interrupt", function() { slider.interrupt(); })
         .on("start drag", function() {
-          currentValue = d3.event.x;
-          update(x.invert(currentValue));
+          var gap = targetValue/50;
+          if(Math.abs(d3.event.x - currentValue) > gap / 2) {
+            if(d3.event.x < currentValue) {
+              currentValue = currentValue - gap;
+            } else {
+              currentValue = currentValue + gap;
+            }
+            updateNodes(true);
+            update(x.invert(currentValue));
+          }
         })
     );
 
@@ -78,23 +86,19 @@ var label = slider.append("text")
     .text(timeFormat(startDate, true))
     .attr("transform", "translate(0," + (-25) + ")")
 
-// d3.csv("circles.csv", prepare, function(data) {
-  // dataset = data;
-  // drawPlot(dataset);
-
-  playButton
-    .on("click", function() {
-    var button = d3.select(this);
-    if (button.text() == "Pause") {
-      moving = false;
-      clearInterval(timer);
-      button.text("Play");
-    } else {
-      moving = true;
-      timer = setInterval(step, 100);
-      button.text("Pause");
-    }
-  })
+playButton
+  .on("click", function() {
+  var button = d3.select(this);
+  if (button.text() == "Pause") {
+    moving = false;
+    clearInterval(timer);
+    button.text("Play");
+  } else {
+    moving = true;
+    timer = setInterval(step, 100);
+    button.text("Pause");
+  }
+})
 
 function updateNodes(remove) {
 
@@ -148,7 +152,7 @@ function step() {
 }
 
 function update(h) {
-  var count = Math.round(x(h)/targetValue*151) % 5
+  var count = Math.round(x(h)/targetValue*50) % 5
 
   handle.attr("cx", x(h));
   label
