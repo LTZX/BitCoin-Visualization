@@ -112,18 +112,6 @@
     {"source": "h", "target": "i", "value": 1},
     {"source": "h", "target": "j", "value": 1},
     {"source": "h", "target": "k", "value": 1},
-    {"source": "l", "target": "m", "value": 1},
-    {"source": "n", "target": "o", "value": 2},
-    {"source": "n", "target": "p", "value": 1},
-    {"source": "n", "target": "k", "value": 1},
-    {"source": "q", "target": "r", "value": 3},
-    {"source": "s", "target": "r", "value": 3},
-    {"source": "t", "target": "r", "value": 5},
-    {"source": "u", "target": "v", "value": 1},
-    {"source": "w", "target": "x", "value": 1},
-    {"source": "w", "target": "y", "value": 1},
-    {"source": "y", "target": "z", "value": 1},
-    {"source": "z", "target": "k", "value": 5},
-    {"source": "k", "target": "i", "value": 6}
+    {"source": "l", "target": "m", "value": 1}
   ]
 }

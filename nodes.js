@@ -48,6 +48,7 @@ d3.json("data.json", function(error, data) {
     nodes.map(function(d){ nodesmap[d.id] = d; });
     simulation = forceSimulation(nodes, links).on("tick", ticked);
     var color = d3.scaleOrdinal(d3.schemeCategory20);
+
     const link = network.append("g")
       .selectAll("line")
       .data(links)
@@ -56,26 +57,26 @@ d3.json("data.json", function(error, data) {
         .attr("stroke", "#66ccff")
         .attr("stroke-opacity", 0.6)
         .attr("stroke-width", d => Math.sqrt(d.value))
-        .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")");
+        .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
 
     const node = network.append("g")
       .selectAll("circle")
       .data(nodes)
       .enter().append("circle")
         .attr("class", "node")
+        .attr("id", function(d) { return d.id; })
         .attr("r", 5)
-        .attr("fill", function(d){
-          if(d.group == 0) {
-            return "#ffa64d";
-          } else {
-            return "#b3b3b3";
-          }
-        })
+        .attr("fill", "#b3b3b3")
         .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
         .call(drag(simulation));
 
     node.append("title")
         .text(d => d.id);
+
+    link.each(function(d){
+          d3.select("#"+d.source.id).attr("fill", "#ffa64d");
+          d3.select("#"+d.target.id).attr("fill", "#ffa64d");
+        })
 
     function ticked() {
       network.select("g").selectAll(".link")
