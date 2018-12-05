@@ -103,7 +103,7 @@ playButton
 function updateNodes(remove) {
 
   if(remove) {
-    var random = Math.floor(Math.random() * 40) + 1;
+    var random = Math.floor(Math.random() * 10) + 1;
     for(var i = 0; i < random; i++) {
       var randomIndex = Math.floor(Math.random() * links.length);
       links.splice(randomIndex,1);
@@ -127,13 +127,19 @@ function updateNodes(remove) {
   var newlinks = network.select("g").selectAll(".link")
         .data(links)
 
+  d3.selectAll(".node").attr("fill", "#b3b3b3");
   newlinks.enter().append("line")
           .attr("class", "link")
           .attr("stroke", "#66ccff")
           .attr("stroke-opacity", 0.6)
           .attr("stroke-width", d => Math.sqrt(d.value))
           .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
+
   newlinks.exit().remove();
+  network.select("g").selectAll(".link").each(function(d){
+            d3.select("#"+d.source.id).attr("fill", "#ffa64d");
+            d3.select("#"+d.target.id).attr("fill", "#ffa64d");
+          })
 
   simulation.force("link", d3.forceLink(links).id(d => d.id));
   simulation.alpha(0.8).restart();
