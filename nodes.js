@@ -24,7 +24,7 @@ function drag(simulation) {
 
 function forceSimulation(nodes, links) {
     return d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id))
+        .force("link", d3.forceLink(links).id(d => d.NickName))
         .force("charge", d3.forceManyBody())
         .force("x", d3.forceX())
         .force("y", d3.forceY());
@@ -40,12 +40,11 @@ var network = d3.select("#network")
     .attr("width", nodewith)
     .attr("height", nodeheight)
 
-d3.json("data.json", function(error, data) {
+d3.json("node_view.json", function(error, data) {
     if (error) throw error;
-
     nodes = data.nodes;
     links = data.links;
-    nodes.map(function(d){ nodesmap[d.id] = d; });
+    nodes.map(function(d){ nodesmap[d.NickName] = d; });
     simulation = forceSimulation(nodes, links).on("tick", ticked);
     var color = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -64,18 +63,18 @@ d3.json("data.json", function(error, data) {
       .data(nodes)
       .enter().append("circle")
         .attr("class", "node")
-        .attr("id", function(d) { return d.id; })
+        .attr("id", function(d) { return d.NickName; })
         .attr("r", 5)
         .attr("fill", "#b3b3b3")
         .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
         .call(drag(simulation));
 
     node.append("title")
-        .text(d => d.id);
+        .text(d => d.NickName);
 
     link.each(function(d){
-          d3.select("#"+d.source.id).attr("fill", "#ffa64d");
-          d3.select("#"+d.target.id).attr("fill", "#ffa64d");
+          d3.select("#"+d.source.NickName).attr("fill", "#ffa64d");
+          d3.select("#"+d.target.NickName).attr("fill", "#ffa64d");
         })
 
     function ticked() {

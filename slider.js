@@ -137,11 +137,11 @@ function updateNodes(remove) {
 
   newlinks.exit().remove();
   network.select("g").selectAll(".link").each(function(d){
-            d3.select("#"+d.source.id).attr("fill", "#ffa64d");
-            d3.select("#"+d.target.id).attr("fill", "#ffa64d");
+            d3.select("#"+d.source.NickName).attr("fill", "#ffa64d");
+            d3.select("#"+d.target.NickName).attr("fill", "#ffa64d");
           })
 
-  simulation.force("link", d3.forceLink(links).id(d => d.id));
+  simulation.force("link", d3.forceLink(links).id(d => d.NickName));
   simulation.alpha(0.8).restart();
 }
 
