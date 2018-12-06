@@ -16,6 +16,10 @@ The right panel shows all the BitCoin addresses that in the system and the trans
 
 ### Functions
 Hover to see the detail information of a BitCoin address.  
-The color of the nodes demonstrates if it is active at the time. 
-The color of the links demonstrates the transaction status.
-The link will connect to the nodes that are related to this transaction.
+The color of the nodes demonstrates if it is active at the time.  
+The color of the links demonstrates the transaction status.  
+The link will connect to the nodes that are related to this transaction.  
+
+## Time Slider
+The slider can be used to choose the time point by dragging it to the point.  
+You can also use the "Play" button to make it move automatically. And "Pause" it with the same button.  
