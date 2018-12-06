@@ -41,6 +41,7 @@ var network = d3.select("#network")
     .attr("height", nodeheight)
 
 var allLinkData, scaleDown = d3.scaleLinear();
+var myGrey = "#C7D1D6";
 
 d3.json("node_view.json", function(error, data) {
     if (error) throw error;
@@ -65,7 +66,7 @@ d3.json("node_view.json", function(error, data) {
         .attr("class", "node")
         .attr("id", function(d) { return d.NickName; })
         .attr("r", 5)
-        .attr("fill", "#b3b3b3")
+        .attr("fill", myGrey)
         .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
         .call(drag(simulation))
         .on("mouseover",function(d){

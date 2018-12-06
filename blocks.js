@@ -13,8 +13,8 @@ var boxWidth = blockwith - 200;
 transArea.append("rect")
     .attr("width", boxWidth + 100)
     .attr("height", (blockheight/2 * 0.85))
-    .attr("fill", "#b3b3b3")
-    .attr("opacity", 0.2)
+    .attr("fill", myGrey)
+    .attr("opacity", 0.3)
     .attr("transform", "translate(50," + ((blockheight * 0.6) - 20) + ")")
 
 var counts = Math.floor(boxWidth / 30);

@@ -106,11 +106,10 @@ function updateLinks(index) {
 
   var newlinks = network.select("g").selectAll(".link")
         .data(links)
-  d3.selectAll(".node").attr("fill", "#b3b3b3");
+  d3.selectAll(".node").attr("fill", myGrey);
   newlinks.enter().append("line")
           .attr("class", "link")
           .attr("stroke", function(d) { return colorDict[d.status]; })
-          // .attr("stroke-opacity", 0.6)
           .attr("stroke-width", 3)
           .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
 

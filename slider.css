@@ -10,7 +10,7 @@ body {
 }
 
 #play-button {
-  background: #f08080;
+  background: #EF798A;
   padding-right: 26px;
   border-radius: 3px;
   border: none;
@@ -22,7 +22,7 @@ body {
 }
 
 #play-button:hover {
-  background-color: #696969;
+  background-color: #C7D1D6;
 }
 
 .ticks {
@@ -36,14 +36,14 @@ body {
 }
 
 .track {
-  stroke: #000;
-  stroke-opacity: 0.3;
-  stroke-width: 10px;
+  stroke: #C7D1D6;
+  stroke-opacity: 0.8;
+  stroke-width: 20px;
 }
 
 .track-inset {
-  stroke: #dcdcdc;
-  stroke-width: 8px;
+  stroke: #000;
+  stroke-width: 0px;
 }
 
 .track-overlay {
