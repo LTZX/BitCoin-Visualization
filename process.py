@@ -83,6 +83,26 @@ def transform_unrecorded(block_ind, unrecorded):
 
 if __name__ == '__main__':
     main()
-    valid_dic.sort(key = operator.itemgetter("time"))
-    with open("random_transactions_new.json", "wb") as f:
-        f.write(json.dumps(valid_dic).encode("utf-8"))
+    valid_dic.sort(key=operator.itemgetter("time"))
+
+    result = []
+    index = 1
+    i = 0
+    currentTimeInterval = []
+    while index <= 60 and i < len(valid_dic):
+        currentBar = (datetime.datetime(2018, 10, 24, 10, 00) + datetime.timedelta(minutes=index * 5)).strftime(
+            "%d/%m/%y %H:%M:%S")
+        if valid_dic[i]["time"] > currentBar:
+            result.append(currentTimeInterval)
+            currentTimeInterval = []
+            index += 1
+            i += 1
+        else:
+            currentTimeInterval.append(valid_dic[i])
+            i += 1
+
+    print("here")
+    with open("random_transactions_five.json", "wb") as f:
+        f.write(json.dumps(result).encode("utf-8"))
+
+    print("here")
