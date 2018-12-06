@@ -12,3 +12,10 @@ The color of the circles demonstrates the status of the transactions.
 Sort or Group the circles with the buttons that offered. (In progress)  
 
 ## Right Panel
+The right panel shows all the BitCoin addresses that in the system and the transacations were maded by those addresses.
+
+### Functions
+Hover to see the detail information of a BitCoin address.  
+The color of the nodes demonstrates if it is active at the time. 
+The color of the links demonstrates the transaction status.
+The link will connect to the nodes that are related to this transaction.
