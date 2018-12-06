@@ -98,7 +98,7 @@ d3.json("node_view.json", function(error, data) {
     rightLabel.append("text").attr("id", "BalanceLabel").attr("transform", "translate(10,80)")
 
     var colorData = [{"color": "#EF798A", "status": "Invalid"},
-                     {"color": "#AAFCB8", "status": "Valid"},
+                     {"color": "#A0E8AF", "status": "Valid"},
                      {"color": "#6290C3", "status": "Unrecorded"}]
 
     var linkColor = network.append("g")

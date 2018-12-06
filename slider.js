@@ -12,8 +12,8 @@ function timeFormat(date, second) {
   return t;
 }
 
-var startDate = new Date(2018, 10, 24, 10, 30, 00),
-    endDate = new Date(2018, 10, 24, 15, 30, 00);;
+var startDate = new Date(2018, 10, 24, 2, 30, 00),
+    endDate = new Date(2018, 10, 24, 7, 30, 00);
 
 var margin = {top:40, right:20, bottom:0, left:50},
     width = document.getElementById('sliderDiv').offsetWidth - margin.left - margin.right,
@@ -99,7 +99,7 @@ playButton
   }
 })
 
-var colorDict = {"INVALID": "#EF798A", "VALID": "#AAFCB8", "UNRECORDED": "#6290C3"}
+var colorDict = {"INVALID": "#EF798A", "VALID": "#A0E8AF", "UNRECORDED": "#6290C3"}
 
 function updateLinks(index) {
   links = allLinkData[index];
@@ -116,8 +116,8 @@ function updateLinks(index) {
 
   newlinks.exit().remove();
   network.select("g").selectAll(".link").each(function(d){
-            d3.select("#"+d.source.NickName).attr("fill", "#ffa64d");
-            d3.select("#"+d.target.NickName).attr("fill", "#ffa64d");
+            d3.select("#"+d.source.NickName).attr("fill", "#FCDFA6");
+            d3.select("#"+d.target.NickName).attr("fill", "#FCDFA6");
           })
 
   simulation.force("link", d3.forceLink(links).id(d => d.NickName));
