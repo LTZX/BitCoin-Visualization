@@ -99,7 +99,7 @@ playButton
   }
 })
 
-var colorDict = {"INVALID": "#ff0000", "VALID": "#00ff00", "UNRECORDED": "#0099ff"}
+var colorDict = {"INVALID": "#EF798A", "VALID": "#AAFCB8", "UNRECORDED": "#6290C3"}
 
 function updateLinks(index) {
   links = allLinkData[index];

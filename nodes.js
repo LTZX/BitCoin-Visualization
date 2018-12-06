@@ -48,7 +48,6 @@ d3.json("node_view.json", function(error, data) {
     links = [];
     nodes.map(function(d){ nodesmap[d.NickName] = d; });
     simulation = forceSimulation(nodes, links).on("tick", ticked);
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
 
     const link = network.append("g")
       .selectAll("line")
@@ -98,9 +97,9 @@ d3.json("node_view.json", function(error, data) {
     rightLabel.append("text").attr("id", "NickNameLabel").attr("transform", "translate(10,60)")
     rightLabel.append("text").attr("id", "BalanceLabel").attr("transform", "translate(10,80)")
 
-    var colorData = [{"color": "#ff0000", "status": "Invalid"},
-                     {"color": "#00ff00", "status": "Valid"},
-                     {"color": "#0099ff", "status": "Unrecorded"}]
+    var colorData = [{"color": "#EF798A", "status": "Invalid"},
+                     {"color": "#AAFCB8", "status": "Valid"},
+                     {"color": "#6290C3", "status": "Unrecorded"}]
 
     var linkColor = network.append("g")
       .selectAll("g")

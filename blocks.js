@@ -28,13 +28,6 @@ var oneButton = buttons.selectAll("g")
       return "translate(" + i * buttonWid + ",0)";
     })
 
-// oneButton.append("rect")
-//     .attr("fill", "#b3b3b3")
-//     .attr("width", 60)
-//     .attr("height", 20)
-//     .attr("opacity", 0.3)
-//     .attr("transform", "translate(" + (buttonWid - 60)/2 + ",0)")
-
 oneButton.append("text")
     .text(d => d)
     .attr("transform", "translate(" + (buttonWid - 50)/2 + "," + 15 + ")")
