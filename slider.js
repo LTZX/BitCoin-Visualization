@@ -51,7 +51,7 @@ slider.append("line")
     .call(d3.drag()
         .on("start.interrupt", function() { slider.interrupt(); })
         .on("start drag", function() {
-          var gap = targetValue/60;
+          var gap = targetValue/59;
           if(Math.abs(d3.event.x - currentValue) > gap / 2) {
             if(d3.event.x < currentValue) {
               currentValue = currentValue - gap;
@@ -99,25 +99,19 @@ playButton
   }
 })
 
-
+var colorDict = {"INVALID": "#ff0000", "VALID": "#00ff00", "UNRECORDED": "#0099ff"}
 
 function updateLinks(index) {
-  if(index > allLinkData.length - 1) {
-      return;
-  }
   links = allLinkData[index];
 
   var newlinks = network.select("g").selectAll(".link")
         .data(links)
-
   d3.selectAll(".node").attr("fill", "#b3b3b3");
   newlinks.enter().append("line")
           .attr("class", "link")
-          .attr("stroke", "#66ccff")
-          .attr("stroke-opacity", 0.6)
-          .attr("stroke-width", function(d) {
-              return scaleDown(d.value);
-          })
+          .attr("stroke", function(d) { return colorDict[d.status]; })
+          // .attr("stroke-opacity", 0.6)
+          .attr("stroke-width", 3)
           .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
 
   newlinks.exit().remove();
@@ -132,7 +126,7 @@ function updateLinks(index) {
 
 function step() {
   update(x.invert(currentValue));
-  currentValue = currentValue + (targetValue/60);
+  currentValue = currentValue + (targetValue/59);
   if (currentValue > targetValue) {
     moving = false;
     currentValue = 0;
@@ -143,7 +137,7 @@ function step() {
 }
 
 function update(h) {
-  var index = Math.round(x(h)/targetValue*60);
+  var index = Math.round(x(h)/targetValue*59);
 
   handle.attr("cx", x(h));
   label
@@ -151,4 +145,5 @@ function update(h) {
     .text(timeFormat(h, true));
 
   updateLinks(index);
+  updateTrans(index);
 }

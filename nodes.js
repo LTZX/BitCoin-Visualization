@@ -33,15 +33,14 @@ function forceSimulation(nodes, links) {
 var links = [], nodes = [];
 var nodesmap = {};
 var simulation;
-var nodewith = document.getElementById('network').offsetWidth;
-var nodeheight = document.getElementById('network').offsetHeight;
+var nodewith = document.getElementById('network').offsetWidth - 30;
+var nodeheight = document.getElementById('network').offsetHeight - 5;
 var network = d3.select("#network")
     .append("svg")
     .attr("width", nodewith)
     .attr("height", nodeheight)
 
 var allLinkData, scaleDown = d3.scaleLinear();
-
 
 d3.json("node_view.json", function(error, data) {
     if (error) throw error;
@@ -51,17 +50,14 @@ d3.json("node_view.json", function(error, data) {
     simulation = forceSimulation(nodes, links).on("tick", ticked);
     var color = d3.scaleOrdinal(d3.schemeCategory20);
 
-    // const link = network.append("g")
-    //   .selectAll("line")
-    //   .data(links)
-    //   .enter().append("line")
-    //     .attr("class", "link")
-    //     .attr("stroke", "#66ccff")
-    //     .attr("stroke-opacity", 0.6)
-    //     .attr("stroke-width", function(d) {
-    //         return scaleDown(d.value);
-    //     })
-    //     .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
+    const link = network.append("g")
+      .selectAll("line")
+      .data(links)
+      .enter().append("line")
+        .attr("class", "link")
+
+    var rightLabel = network.append("g")
+      .attr("id", "rightLabel")
 
     const node = network.append("g")
       .selectAll("circle")
@@ -72,15 +68,18 @@ d3.json("node_view.json", function(error, data) {
         .attr("r", 5)
         .attr("fill", "#b3b3b3")
         .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
-        .call(drag(simulation));
+        .call(drag(simulation))
+        .on("mouseover",function(d){
+          rightLabel.select("#AddressLabel").text("Address: " + d.Address)
+          rightLabel.select("#NickNameLabel").text("NickName: " + d.NickName)
+          rightLabel.select("#HashLabel").text("Hash: " + d.Hash)
+          rightLabel.select("#BalanceLabel").text("Balance: " + d.Balance)
 
-    node.append("title")
-        .text(d => d.NickName);
-
-    // link.each(function(d){
-    //       d3.select("#"+d.source.NickName).attr("fill", "#ffa64d");
-    //       d3.select("#"+d.target.NickName).attr("fill", "#ffa64d");
-    //     })
+          rightLabel.attr("visibility", "visible")
+        })
+        .on("mouseout",function(d){
+          rightLabel.attr("visibility", "hidden")
+        })
 
     function ticked() {
       network.select("g").selectAll(".link")
@@ -93,16 +92,55 @@ d3.json("node_view.json", function(error, data) {
           .attr("cx", d => d.x)
           .attr("cy", d => d.y);
     }
+
+    rightLabel.append("text").attr("id", "AddressLabel").attr("transform", "translate(10,20)")
+    rightLabel.append("text").attr("id", "HashLabel").attr("transform", "translate(10,40)")
+    rightLabel.append("text").attr("id", "NickNameLabel").attr("transform", "translate(10,60)")
+    rightLabel.append("text").attr("id", "BalanceLabel").attr("transform", "translate(10,80)")
+
+    var colorData = [{"color": "#ff0000", "status": "Invalid"},
+                     {"color": "#00ff00", "status": "Valid"},
+                     {"color": "#0099ff", "status": "Unrecorded"}]
+
+    var linkColor = network.append("g")
+      .selectAll("g")
+      .data(colorData)
+      .enter().append("g")
+      .attr("transform", function(d,i){
+        i = i - 1;
+        return "translate(" +  (nodewith - 120) + "," + (i * 20 + nodeheight - 50) + ")";
+      })
+
+    linkColor.append("rect")
+    .attr("width", 20)
+    .attr("height", 2)
+    .attr("fill", d => d.color)
+
+    linkColor.append("text")
+    .text(d => d.status)
+    .attr("transform", "translate(30, 5)")
 })
 
 d3.json("data.json", function(error, data) {
-    allLinkData = data.slice(0, data.length - 1);
+    allLinkData = data;
+    var minData = Infinity, maxData = 0;
     for(var i = 0; i < allLinkData.length; i++) {
         allLinkData[i] = allLinkData[i].map(function(d){
-          let newTrans = {"source": nodesmap[d.source], "target": nodesmap[d.target], "value": d.value};
+          let newTrans = {"source": nodesmap[d.from],
+                          "target": nodesmap[d.to],
+                          "amount": d.amount,
+                          "status": d.status,
+                          "time": d.time,
+                          "block": d.block};
           return newTrans;
         })
+        if(d3.min(allLinkData[i], function(d) { return d.amount; }) < minData) {
+          minData = d3.min(allLinkData[i], function(d) { return d.amount; })
+        }
+        if(d3.max(allLinkData[i], function(d) { return d.amount; }) > maxData) {
+          maxData = d3.max(allLinkData[i], function(d) { return d.amount; })
+        }
     }
-    maxAndMin = data[data.length - 1]
-    scaleDown.range([1, 10]).domain([maxAndMin.min, maxAndMin.max]);
+
+    scaleDown.range([5, 15]).domain([(minData), (maxData)]);
 })
