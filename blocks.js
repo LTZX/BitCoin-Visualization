@@ -1,7 +1,7 @@
-var blockwith = document.getElementById('blocks').offsetWidth - 30;
-var blockheight = document.getElementById('blocks').offsetHeight - 5;
+var blockwith = document.getElementById('transArea').offsetWidth - 30;
+var blockheight = document.getElementById('transArea').offsetHeight - 5;
 
-var blocks = d3.select("#blocks")
+var blocks = d3.select("#transArea")
     .append("svg")
     .attr("width", blockwith)
     .attr("height", blockheight)
@@ -10,16 +10,17 @@ var blocks = d3.select("#blocks")
 
 var transArea = blocks.append("g").attr("class", "trans")
 var boxWidth = blockwith - 200;
-var boxHeight = (blockheight/2 * 0.85)
+var boxHeight = blockheight - 130;
+
 transArea.append("rect")
     .attr("width", boxWidth + 100)
     .attr("height", boxHeight)
     .attr("fill", myGrey)
     .attr("opacity", 0.3)
-    .attr("transform", "translate(50," + ((blockheight * 0.6) - 20) + ")")
+    .attr("transform", "translate(50," + 130 + ")")
 
 var tranInst = transArea.append("g")
-.attr("transform", "translate(50," + ((blockheight * 0.6) - 20) + ")")
+.attr("transform", "translate(50," + 130 + ")")
 
 tranInst.append("text")
     .attr("class", "transnodeinst")
@@ -40,7 +41,7 @@ tranInst.append("text")
 var counts = Math.floor(boxWidth / 30);
 var buttonWid = (blockwith - 60) / 3;
 
-var buttons = blocks.append("g").attr("transform", "translate(30,"+ blockheight/2 +")")
+var buttons = blocks.append("g").attr("transform", "translate(30,"+ 100 +")")
 var oneButton = buttons.selectAll("g")
     .data(["By Status", "By Amount", "By Time"])
     .enter().append("g")
@@ -53,12 +54,26 @@ oneButton.append("text")
     .attr("transform", "translate(" + (buttonWid - 50)/2 + "," + 15 + ")")
     .attr("cursor", "pointer")
     .on("click", function(d){
+        switch (d) {
+          case "By Status":
+            transArea.call(function(data){
+                console.log(data)
+            })
+            break;
+          case "By Amount":
 
+            break;
+          case "By Time":
+
+            break;
+          default:
+            console.log("Should not appear.")
+        }
     })
 
 var leftLabel = blocks.append("g")
     .attr("id", "leftLabel")
-    .attr("transform", "translate(50," + (blockheight/2 - 100 ) + ")")
+    .attr("transform", "translate(50," + 5 + ")")
 
 var llcover = leftLabel.append("g")
 llcover.append("rect")
@@ -93,7 +108,7 @@ function updateTrans(index) {
       .attr("transform", function(d, i) {
           var row = Math.floor(i / counts);
           i = i % counts;
-          return "translate(" + (i * 35 + 100) + "," + (blockheight * 0.6 + row * 35) + ")"
+          return "translate(" + (i * 35 + 90) + "," + (160 + row * 35) + ")"
       })
       .on("mouseover",function(d){
         leftLabel.select("#StatusLabel").text("Status: " + d.status)

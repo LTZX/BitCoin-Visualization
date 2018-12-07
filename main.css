@@ -15,6 +15,16 @@ html,body{
   border: 1px solid grey;
 }
 
+#blocksArea {
+  height: 30%;
+  border: 1px solid grey;
+}
+
+#transArea {
+  height: 70%;
+  border: 1px solid grey;
+}
+
 #network {
   border: 1px solid grey;
 }

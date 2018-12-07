@@ -58,6 +58,13 @@ d3.json("node_view.json", function(error, data) {
 
     var rightLabel = network.append("g")
       .attr("id", "rightLabel")
+    var rightInst = network.append("text")
+        .attr("id", "rightInst")
+        .text("Hover the nodes to see the detail information.")
+        .attr("transform", "translate(10,40)")
+        .attr("font-size", 16)
+        .attr("font-weight", "bold")
+        .style("fill", myGrey)
 
     const node = network.append("g")
       .selectAll("circle")
@@ -76,9 +83,11 @@ d3.json("node_view.json", function(error, data) {
           rightLabel.select("#BalanceLabel").text("Balance: " + d.Balance)
 
           rightLabel.attr("visibility", "visible")
+          rightInst.attr("visibility", "hidden")
         })
         .on("mouseout",function(d){
           rightLabel.attr("visibility", "hidden")
+          rightInst.attr("visibility", "visible")
         })
 
     function ticked() {
