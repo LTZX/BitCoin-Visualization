@@ -87,7 +87,6 @@ var label = slider.append("text")
 
 playButton
   .on("click", function() {
-  d3.selectAll(".transnodeinst").remove()
   var button = d3.select(this);
   if (button.text() == "Pause") {
     moving = false;
@@ -138,6 +137,7 @@ function step() {
 
 function update(h) {
   var index = Math.round(x(h)/targetValue*60);
+  d3.selectAll(".transnodeinst").remove()
 
   handle.attr("cx", x(h));
   label

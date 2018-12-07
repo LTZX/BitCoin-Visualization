@@ -6,8 +6,6 @@ var blocks = d3.select("#transArea")
     .attr("width", blockwith)
     .attr("height", blockheight)
 
-
-
 var transArea = blocks.append("g").attr("class", "trans")
 var boxWidth = blockwith - 200;
 var boxHeight = blockheight - 130;
@@ -56,15 +54,13 @@ oneButton.append("text")
     .on("click", function(d){
         switch (d) {
           case "By Status":
-            transArea.call(function(data){
-                console.log(data)
-            })
+            links.sort(x,y => d3.ascending(x.status, y.status))
             break;
           case "By Amount":
-
+            links.sort(x,y => d3.ascending(x.amount, y.amount))
             break;
           case "By Time":
-
+            links.sort(x,y => d3.ascending(x.time, y.time))
             break;
           default:
             console.log("Should not appear.")
