@@ -10,12 +10,32 @@ var blocks = d3.select("#blocks")
 
 var transArea = blocks.append("g").attr("class", "trans")
 var boxWidth = blockwith - 200;
+var boxHeight = (blockheight/2 * 0.85)
 transArea.append("rect")
     .attr("width", boxWidth + 100)
-    .attr("height", (blockheight/2 * 0.85))
+    .attr("height", boxHeight)
     .attr("fill", myGrey)
     .attr("opacity", 0.3)
     .attr("transform", "translate(50," + ((blockheight * 0.6) - 20) + ")")
+
+var tranInst = transArea.append("g")
+.attr("transform", "translate(50," + ((blockheight * 0.6) - 20) + ")")
+
+tranInst.append("text")
+    .attr("class", "transnodeinst")
+    .text("Press the Play button or Drag on the slider.")
+    .attr("transform", "translate(20," + (boxHeight / 2 - 10) + ")")
+    .attr("font-size", 16)
+    .attr("font-weight", "bold")
+    .style("fill", myGrey)
+
+tranInst.append("text")
+    .attr("class", "transnodeinst")
+    .text("The transactions will be presented here.")
+    .attr("transform", "translate(20," + (boxHeight / 2 + 10) + ")")
+    .attr("font-size", 16)
+    .attr("font-weight", "bold")
+    .style("fill", myGrey)
 
 var counts = Math.floor(boxWidth / 30);
 var buttonWid = (blockwith - 60) / 3;
@@ -37,13 +57,28 @@ oneButton.append("text")
     })
 
 var leftLabel = blocks.append("g")
-  .attr("id", "leftLabel")
-  .attr("transform", "translate(50," + (blockheight/2 - 90 ) + ")")
+    .attr("id", "leftLabel")
+    .attr("transform", "translate(50," + (blockheight/2 - 100 ) + ")")
 
-leftLabel.append("text").attr("id", "StatusLabel").attr("transform", "translate(0,20)")
-leftLabel.append("text").attr("id", "TransLabel").attr("transform", "translate(0,40)")
-leftLabel.append("text").attr("id", "TimeLabel").attr("transform", "translate(0,60)")
-leftLabel.append("text").attr("id", "BlockLabel").attr("transform", "translate(0,80)")
+var llcover = leftLabel.append("g")
+llcover.append("rect")
+    .attr("width", boxWidth + 100)
+    .attr("height", 90)
+    .attr("fill", myGrey)
+    .attr("opacity", 0.3)
+
+llcover.append("text")
+    .attr("class", "transinst")
+    .text("Hover the circles below to see detail information.")
+    .attr("transform", "translate(20,50)")
+    .attr("font-size", 16)
+    .attr("font-weight", "bold")
+    .style("fill", myGrey)
+
+leftLabel.append("text").attr("class", "transinfo").attr("id", "StatusLabel").attr("transform", "translate(20,20)")
+leftLabel.append("text").attr("class", "transinfo").attr("id", "TransLabel").attr("transform", "translate(20,40)")
+leftLabel.append("text").attr("class", "transinfo").attr("id", "TimeLabel").attr("transform", "translate(20,60)")
+leftLabel.append("text").attr("class", "transinfo").attr("id", "BlockLabel").attr("transform", "translate(20,80)")
 
 function updateTrans(index) {
   links = allLinkData[index];
@@ -66,10 +101,12 @@ function updateTrans(index) {
         leftLabel.select("#TimeLabel").text("Time: " + d.time)
         leftLabel.select("#BlockLabel").text("Block: " + d.block)
 
-        leftLabel.attr("visibility", "visible")
+        leftLabel.selectAll(".transinfo").attr("visibility", "visible")
+        leftLabel.selectAll(".transinst").attr("visibility", "hidden")
       })
       .on("mouseout",function(d){
-        leftLabel.attr("visibility", "hidden")
+        leftLabel.selectAll(".transinfo").attr("visibility", "hidden")
+        leftLabel.selectAll(".transinst").attr("visibility", "visible")
       })
 
 }

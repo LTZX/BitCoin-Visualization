@@ -51,7 +51,7 @@ slider.append("line")
     .call(d3.drag()
         .on("start.interrupt", function() { slider.interrupt(); })
         .on("start drag", function() {
-          var gap = targetValue/59;
+          var gap = targetValue/60;
           if(Math.abs(d3.event.x - currentValue) > gap / 2) {
             if(d3.event.x < currentValue) {
               currentValue = currentValue - gap;
@@ -82,11 +82,12 @@ var handle = slider.insert("circle", ".track-overlay")
 var label = slider.append("text")
     .attr("class", "label")
     .attr("text-anchor", "middle")
-    .text(timeFormat(startDate, true))
+    .text(timeFormat(startDate, false))
     .attr("transform", "translate(0," + (-25) + ")")
 
 playButton
   .on("click", function() {
+  d3.selectAll(".transnodeinst").remove()
   var button = d3.select(this);
   if (button.text() == "Pause") {
     moving = false;
@@ -125,7 +126,7 @@ function updateLinks(index) {
 
 function step() {
   update(x.invert(currentValue));
-  currentValue = currentValue + (targetValue/59);
+  currentValue = currentValue + (targetValue/60);
   if (currentValue > targetValue) {
     moving = false;
     currentValue = 0;
@@ -136,13 +137,14 @@ function step() {
 }
 
 function update(h) {
-  var index = Math.round(x(h)/targetValue*59);
+  var index = Math.round(x(h)/targetValue*60);
 
   handle.attr("cx", x(h));
   label
     .attr("x", x(h))
-    .text(timeFormat(h, true));
-
-  updateLinks(index);
-  updateTrans(index);
+    .text(timeFormat(h, false));
+  if(index < 60){
+    updateLinks(index);
+    updateTrans(index);
+  }
 }
