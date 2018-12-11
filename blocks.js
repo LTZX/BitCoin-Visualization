@@ -84,7 +84,7 @@ oneButton.on("click", function(d){
         sortData()
         links.map(function(d, i){ d.index = i; })
         transArea.selectAll(".transNode")
-        .transition().duration(250)
+        .transition().duration(300)
         .attr("transform", function(d) {
             var row = Math.floor(d.index / counts);
             i = d.index % counts;

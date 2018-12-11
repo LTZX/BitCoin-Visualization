@@ -86,17 +86,17 @@ var label = slider.append("text")
     .attr("transform", "translate(0," + (-25) + ")")
 
 playButton
-  .on("click", function() {
-  var button = d3.select(this);
-  if (button.text() == "Pause") {
-    moving = false;
-    clearInterval(timer);
-    button.text("Play");
-  } else {
-    moving = true;
-    timer = setInterval(step, 100);
-    button.text("Pause");
-  }
+    .on("click", function() {
+    var button = d3.select(this);
+    if (button.text() == "Pause") {
+        moving = false;
+        clearInterval(timer);
+        button.text("Play");
+    } else {
+        moving = true;
+        timer = setInterval(step, 160);
+        button.text("Pause");
+    }
 })
 
 var colorDict = {"INVALID": "#EF798A", "VALID": "#A0E8AF", "UNRECORDED": "#6290C3"}
@@ -112,6 +112,7 @@ function updateLinks(index) {
           .attr("stroke", function(d) { return colorDict[d.status]; })
           .attr("stroke-width", 3)
           .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
+  d3.selectAll(".link").attr("stroke", function(d) { return colorDict[d.status]; })
 
   newlinks.exit().remove();
   network.select("g").selectAll(".link").each(function(d){
@@ -143,6 +144,7 @@ function update(h) {
   label
     .attr("x", x(h))
     .text(timeFormat(h, false));
+
   if(index < 60){
     updateLinks(index);
     updateTrans(index);
