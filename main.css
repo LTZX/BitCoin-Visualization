@@ -17,15 +17,17 @@ html,body{
 
 #blocksArea {
   height: 30%;
-  border: 1px solid grey;
   overflow-x: auto;
 }
 
 #transArea {
   height: 70%;
-  border: 1px solid grey;
 }
 
 #network {
   border: 1px solid grey;
+}
+
+.container-fluid {
+  width: 90%;
 }

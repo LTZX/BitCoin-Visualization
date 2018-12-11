@@ -47,24 +47,54 @@ var oneButton = buttons.selectAll("g")
       return "translate(" + i * buttonWid + ",0)";
     })
 
+var sortDataBy = "By Time";
+function sortData() {
+  switch (sortDataBy) {
+    case "By Status":
+      links.sort(function(x, y){
+         return d3.ascending(x.status, y.status);
+      })
+      break;
+    case "By Amount":
+      links.sort(function(x, y){
+         return d3.ascending(x.amount, y.amount);
+      })
+      break;
+    case "By Time":
+      links.sort(function(x, y){
+         return d3.ascending(x.time, y.time);
+      })
+      break;
+    default:
+      console.log("Should not appear.")
+  }
+}
+
 oneButton.append("text")
     .text(d => d)
     .attr("transform", "translate(" + (buttonWid - 50)/2 + "," + 15 + ")")
     .attr("cursor", "pointer")
-    .on("click", function(d){
-        switch (d) {
-          case "By Status":
-            links.sort(x,y => d3.ascending(x.status, y.status))
-            break;
-          case "By Amount":
-            links.sort(x,y => d3.ascending(x.amount, y.amount))
-            break;
-          case "By Time":
-            links.sort(x,y => d3.ascending(x.time, y.time))
-            break;
-          default:
-            console.log("Should not appear.")
-        }
+    .attr("font-weight", function(d) {
+       if(d == sortDataBy) { return "bold"; }
+       else { return "normal";}
+     })
+
+oneButton.on("click", function(d){
+        sortDataBy = d;
+        sortData()
+        links.map(function(d, i){ d.index = i; })
+        transArea.selectAll(".transNode")
+        .transition().duration(250)
+        .attr("transform", function(d) {
+            var row = Math.floor(d.index / counts);
+            i = d.index % counts;
+            return "translate(" + (i * 35 + 90) + "," + (160 + row * 35) + ")"
+        })
+        oneButton.selectAll("text")
+        .attr("font-weight", function(d) {
+           if(d == sortDataBy) { return "bold"; }
+           else { return "normal";}
+         })
     })
 
 var leftLabel = blocks.append("g")
@@ -93,7 +123,7 @@ leftLabel.append("text").attr("class", "transinfo").attr("id", "BlockLabel").att
 
 function updateTrans(index) {
   links = allLinkData[index];
-
+  sortData();
   transArea.selectAll(".transNode").remove();
   transArea.selectAll("circle")
     .data(links)
@@ -101,14 +131,15 @@ function updateTrans(index) {
       .attr("class", "transNode")
       .attr("r", d => scaleDown(d.amount))
       .attr("fill", d => colorDict[d.status])
-      .attr("transform", function(d, i) {
-          var row = Math.floor(i / counts);
-          i = i % counts;
+      .each(function(d, i){ d.index = i })
+      .attr("transform", function(d) {
+          var row = Math.floor(d.index / counts);
+          i = d.index % counts;
           return "translate(" + (i * 35 + 90) + "," + (160 + row * 35) + ")"
       })
       .on("mouseover",function(d){
         leftLabel.select("#StatusLabel").text("Status: " + d.status)
-        leftLabel.select("#TransLabel").text("Trans: " + d.source.NickName + " to " + d.target.NickName + "with amount of " + d.amount)
+        leftLabel.select("#TransLabel").text("Trans: " + d.source.NickName + " to " + d.target.NickName + " with amount of " + d.amount)
         leftLabel.select("#TimeLabel").text("Time: " + d.time)
         leftLabel.select("#BlockLabel").text("Block: " + d.block)
 

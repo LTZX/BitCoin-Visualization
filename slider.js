@@ -38,7 +38,7 @@ var x = d3.scaleTime()
 
 var slider = svg.append("g")
     .attr("class", "slider")
-    .attr("transform", "translate("+ margin.left + "," + ( margin.top + 25 ) +")")
+    .attr("transform", "translate("+ margin.left + "," + (height/2 + 18 ) +")")
 
 slider.append("line")
     .attr("class", "track")

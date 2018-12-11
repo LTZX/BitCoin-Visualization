@@ -22,19 +22,27 @@ function drag(simulation) {
         .on("end", dragended);
 }
 
-function forceSimulation(nodes, links) {
-    return d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.NickName))
-        .force("charge", d3.forceManyBody())
-        .force("x", d3.forceX())
-        .force("y", d3.forceY());
-}
-
 var links = [], nodes = [];
 var nodesmap = {};
 var simulation;
 var nodewith = document.getElementById('network').offsetWidth - 30;
 var nodeheight = document.getElementById('network').offsetHeight - 5;
+
+function forceSimulation(nodes, links) {
+
+  var force = 0;
+  if(window.innerHeight < 800) {
+      force = -35
+  } else {
+      force = -65
+  }
+  return d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.NickName))
+        .force("charge", d3.forceManyBody().strength(force))
+        .force("x", d3.forceX())
+        .force("y", d3.forceY());
+}
+
 var network = d3.select("#network")
     .append("svg")
     .attr("width", nodewith)
