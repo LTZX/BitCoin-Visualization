@@ -12,18 +12,15 @@ i = 0
 for each in data:
     if i%4 == 3:
         current = []
-        for j in range(i - 3, i):
+        for j in range(i - 3, i + 1):
             for trans in data[j]:
                 current.append(trans)
-        print(len(current))
-        print("=====")
         result.append(copy.deepcopy(current))
         current = []
     else:
         for trans in each:
             newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED"}
             current.append(newTrans)
-        print(len(each),len(current))
         result.append(copy.deepcopy(current))
     i += 1
 

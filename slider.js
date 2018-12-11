@@ -137,16 +137,22 @@ function step() {
 }
 
 function update(h) {
-  var index = Math.round(x(h)/targetValue*60);
-  d3.selectAll(".transnodeinst").remove()
+    var index = Math.floor(x(h)/targetValue*60);
+    d3.selectAll(".transnodeinst").attr("visibility", "hidden");
 
-  handle.attr("cx", x(h));
-  label
-    .attr("x", x(h))
-    .text(timeFormat(h, false));
+    handle.attr("cx", x(h));
+    label
+      .attr("x", x(h))
+      .text(timeFormat(h, false));
 
-  if(index < 60){
-    updateLinks(index);
-    updateTrans(index);
-  }
+    if(index == 0) {
+        d3.selectAll(".link").remove();
+        d3.selectAll(".transNode").remove();
+        d3.selectAll(".node").attr("fill", myGrey);
+        d3.selectAll(".transnodeinst").attr("visibility", "visible");
+    }
+    else if(index <= 60){
+        updateLinks(index-1);
+        updateTrans(index-1);
+    }
 }
