@@ -17,7 +17,6 @@ html,body{
 
 #blocksArea {
   height: 30%;
-  overflow-x: auto;
 }
 
 #transArea {

@@ -50,6 +50,7 @@ var network = d3.select("#network")
 
 var allLinkData, scaleDown = d3.scaleLinear();
 var myGrey = "#C7D1D6";
+var blockData = [];
 
 d3.json("node_view.json", function(error, data) {
     if (error) throw error;
@@ -141,6 +142,7 @@ d3.json("node_view.json", function(error, data) {
 d3.json("data.json", function(error, data) {
     allLinkData = data;
     var minData = Infinity, maxData = 0;
+    var tmpBlockData = {};
     for(var i = 0; i < allLinkData.length; i++) {
         allLinkData[i] = allLinkData[i].map(function(d){
           let newTrans = {"source": nodesmap[d.from],
@@ -149,6 +151,11 @@ d3.json("data.json", function(error, data) {
                           "status": d.status,
                           "time": d.time,
                           "block": d.block};
+          if(!tmpBlockData[newTrans.block]) {
+              tmpBlockData[newTrans.block] = 0;
+          }
+          tmpBlockData[newTrans.block] = tmpBlockData[newTrans.block] + 1
+
           return newTrans;
         })
         if(d3.min(allLinkData[i], function(d) { return d.amount; }) < minData) {
@@ -158,6 +165,14 @@ d3.json("data.json", function(error, data) {
           maxData = d3.max(allLinkData[i], function(d) { return d.amount; })
         }
     }
-
+    var total = 0;
+    for(var each in tmpBlockData){
+        var name = each, count = tmpBlockData[each];
+        if(name != "undefined" && name != "-1") {
+            blockData.push({"name": String(name/20), "count": count})
+        } else {
+            blockData.push({"name": String(name), "count": count})
+        }
+    }
     scaleDown.range([5, 15]).domain([(minData), (maxData)]);
 })

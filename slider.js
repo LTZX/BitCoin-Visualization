@@ -28,6 +28,9 @@ var svg = d3.select("#sliderDiv")
 var moving = false;
 var currentValue = 0;
 var targetValue = width;
+var reached = false;
+var prev = 0;
+var right = true;
 
 var playButton = d3.select("#play-button")
 
@@ -88,6 +91,11 @@ var label = slider.append("text")
 playButton
     .on("click", function() {
     var button = d3.select(this);
+    if(reached == true) {
+        currentValue = 0;
+        clearInterval(timer);
+        moving = false;
+    }
     if (button.text() == "Pause") {
         moving = false;
         clearInterval(timer);
@@ -129,16 +137,21 @@ function step() {
   currentValue = currentValue + (targetValue/60);
   if (currentValue > targetValue) {
     moving = false;
-    currentValue = 0;
-    clearInterval(timer);
+    reached = true;
     playButton.text("Play");
     console.log("Slider moving: " + moving);
   }
 }
 
 function update(h) {
-    var index = Math.floor(x(h)/targetValue*60);
+    var index = Math.round(x(h) / targetValue * 60);
+
+    if(prev == 0 || prev < index) { right = true; }
+    else { right = false; }
+    prev = index;
+
     d3.selectAll(".transnodeinst").attr("visibility", "hidden");
+    d3.selectAll(".blockinst").attr("visibility", "hidden");
 
     handle.attr("cx", x(h));
     label
@@ -150,9 +163,11 @@ function update(h) {
         d3.selectAll(".transNode").remove();
         d3.selectAll(".node").attr("fill", myGrey);
         d3.selectAll(".transnodeinst").attr("visibility", "visible");
+        d3.selectAll(".blockinst").attr("visibility", "visible");
     }
     else if(index <= 60){
-        updateLinks(index-1);
-        updateTrans(index-1);
+        updateLinks(index - 1);
+        updateTrans(index - 1);
+        updateBlocks(index - 1);
     }
 }
