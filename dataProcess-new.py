@@ -9,6 +9,7 @@ with open('random_transactions_five.json') as f:
 result = []
 current = []
 i = 0
+
 for each in data:
     if i%4 == 3:
         current = []
@@ -19,7 +20,7 @@ for each in data:
         current = []
     else:
         for trans in each:
-            newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED"}
+            newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED", "block": trans["block"]}
             current.append(newTrans)
         result.append(copy.deepcopy(current))
     i += 1
