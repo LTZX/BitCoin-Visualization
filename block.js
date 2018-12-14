@@ -34,6 +34,17 @@ function updateBlocks(index) {
         var to = Math.floor(index / 4);
         updateBlocksGraph(to, right)
     }
+
+    if(index % 4 == 3) {
+        d3.selectAll(".blockRect")
+        .attr("fill", function(d, i){
+            if(i == 0) { return highlightColor["GREY"]; }
+            else { return colorDict["GREY"]; }
+        })
+    } else {
+        d3.selectAll(".blockRect")
+        .attr("fill", myGrey)
+    }
 }
 
 function updateBlocksGraph(to, right) {
@@ -59,6 +70,7 @@ function updateBlocksGraph(to, right) {
     }
 
     oneBlock.append("rect")
+    .attr("class", "blockRect")
     .attr("width", boxw)
     .attr("height", boxh)
     .attr("fill", myGrey)

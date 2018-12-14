@@ -31,6 +31,7 @@ var targetValue = width;
 var reached = false;
 var prev = 0;
 var right = true;
+var nodesmap = {};
 
 var playButton = d3.select("#play-button")
 
@@ -107,26 +108,30 @@ playButton
     }
 })
 
-var colorDict = {"INVALID": "#EF798A", "VALID": "#A0E8AF", "UNRECORDED": "#6290C3"}
+var myGrey = "#C7D1D6";
+var colorDict = {"NODE": "#FCDFA6", "INVALID": "#EF798A", "VALID": "#A0E8AF", "UNRECORDED": "#6290C3", "GREY": myGrey}
+var highlightColor = {"NODE": "#FFB200", "INVALID": "#EF5F75", "VALID": "#5CE87A", "UNRECORDED": "#4D83C1", "GREY":"#768389"}
 
 function updateLinks(index) {
   links = allLinkData[index];
 
   var newlinks = network.select("g").selectAll(".link")
         .data(links)
-  d3.selectAll(".node").attr("fill", myGrey);
+  d3.selectAll(".node").attr("fill", myGrey).each(function(d){ d.active = false; });
   newlinks.enter().append("line")
           .attr("class", "link")
           .attr("stroke", function(d) { return colorDict[d.status]; })
           .attr("stroke-width", 3)
           .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
+
   d3.selectAll(".link").attr("stroke", function(d) { return colorDict[d.status]; })
 
   newlinks.exit().remove();
-  network.select("g").selectAll(".link").each(function(d){
-            d3.select("#"+d.source.NickName).attr("fill", "#FCDFA6");
-            d3.select("#"+d.target.NickName).attr("fill", "#FCDFA6");
-          })
+  network.select("g").selectAll(".link")
+      .each(function(d){
+          d3.select("#"+d.source.NickName).attr("fill", "#FCDFA6").each(function(d){ d.active = true; });
+          d3.select("#"+d.target.NickName).attr("fill", "#FCDFA6").each(function(d){ d.active = true; });
+      })
 
   simulation.force("link", d3.forceLink(links).id(d => d.NickName));
   simulation.alpha(0.8).restart();
@@ -161,7 +166,7 @@ function update(h) {
     if(index == 0) {
         d3.selectAll(".link").remove();
         d3.selectAll(".transNode").remove();
-        d3.selectAll(".node").attr("fill", myGrey);
+        d3.selectAll(".node").attr("fill", myGrey).attr("r", 5);
         d3.selectAll(".transnodeinst").attr("visibility", "visible");
         d3.selectAll(".blockinst").attr("visibility", "visible");
     }
@@ -169,5 +174,6 @@ function update(h) {
         updateLinks(index - 1);
         updateTrans(index - 1);
         updateBlocks(index - 1);
+        highlightUpdate();
     }
 }

@@ -23,10 +23,10 @@ function drag(simulation) {
 }
 
 var links = [], nodes = [];
-var nodesmap = {};
 var simulation;
 var nodewith = document.getElementById('network').offsetWidth - 30;
 var nodeheight = document.getElementById('network').offsetHeight - 5;
+var selectCount = 0;
 
 function forceSimulation(nodes, links) {
 
@@ -49,8 +49,71 @@ var network = d3.select("#network")
     .attr("height", nodeheight)
 
 var allLinkData, scaleDown = d3.scaleLinear();
-var myGrey = "#C7D1D6";
 var blockData = [];
+
+function highlightUpdate() {
+    if(selectCount != 0) {
+        d3.selectAll(".unselected")
+            .each(function(d){
+                if(d.active == true) {
+                    d3.select(this)
+                    .attr("fill", colorDict["NODE"])
+                    .attr("r", 5)
+                } else {
+                    d3.select(this)
+                    .attr("fill", colorDict["GREY"])
+                    .attr("r", 5)
+                }
+            })
+        d3.selectAll(".selected")
+            .each(function(d){
+                if(d.active == true) {
+                    d3.select(this)
+                    .attr("fill", highlightColor["NODE"])
+                    .attr("r", 7)
+                } else {
+                    d3.select(this)
+                    .attr("fill", highlightColor["GREY"])
+                    .attr("r", 7)
+                }
+            })
+        d3.selectAll(".link")
+            .each(function(d){
+                if(nodesmap[d.source.NickName].clicked || nodesmap[d.target.NickName].clicked) {
+                    d3.select(this).attr("id", "linkSelected")
+                } else {
+                    d3.select(this).attr("id", "linkUnselected")
+                }
+            })
+        d3.selectAll(".transNode")
+            .each(function(d){
+                if(nodesmap[d.source.NickName].clicked || nodesmap[d.target.NickName].clicked) {
+                    d3.select(this).attr("id", "linkSelected")
+                } else {
+                    d3.select(this).attr("id", "linkUnselected")
+                }
+            })
+
+        d3.selectAll("#linkUnselected")
+            .attr("opacity", 0.3)
+        d3.selectAll("#linkSelected")
+            .attr("opacity", 1)
+    } else {
+        d3.selectAll(".link").attr("opacity", 1);
+        d3.selectAll(".transNode").attr("opacity", 1);
+        d3.selectAll(".node").each(function(d){
+            if(d.active == true) {
+                d3.select(this)
+                .attr("fill", colorDict["NODE"])
+                .attr("r", 5)
+            } else {
+                d3.select(this)
+                .attr("fill", colorDict["GREY"])
+                .attr("r", 5)
+            }
+        })
+    }
+}
 
 d3.json("node_view.json", function(error, data) {
     if (error) throw error;
@@ -67,10 +130,17 @@ d3.json("node_view.json", function(error, data) {
 
     var rightLabel = network.append("g")
       .attr("id", "rightLabel")
-    var rightInst = network.append("text")
-        .attr("id", "rightInst")
+    network.append("text")
+        .attr("class", "rightInst")
         .text("Hover the nodes to see the detail information.")
-        .attr("transform", "translate(10,40)")
+        .attr("transform", "translate(10,30)")
+        .attr("font-size", 16)
+        .attr("font-weight", "bold")
+        .style("fill", myGrey)
+    network.append("text")
+        .attr("class", "rightInst")
+        .text("Click to keep track of the nodes.")
+        .attr("transform", "translate(10,50)")
         .attr("font-size", 16)
         .attr("font-weight", "bold")
         .style("fill", myGrey)
@@ -79,24 +149,38 @@ d3.json("node_view.json", function(error, data) {
       .selectAll("circle")
       .data(nodes)
       .enter().append("circle")
-        .attr("class", "node")
+        .attr("class", "node unselected")
         .attr("id", function(d) { return d.NickName; })
         .attr("r", 5)
         .attr("fill", myGrey)
         .attr("transform", "translate("+ (nodewith/2) + "," + (nodeheight/2) +")")
         .call(drag(simulation))
         .on("mouseover",function(d){
-          rightLabel.select("#AddressLabel").text("Address: " + d.Address)
-          rightLabel.select("#NickNameLabel").text("NickName: " + d.NickName)
-          rightLabel.select("#HashLabel").text("Hash: " + d.Hash)
-          rightLabel.select("#BalanceLabel").text("Balance: " + d.Balance)
+            rightLabel.select("#AddressLabel").text("Address: " + d.Address)
+            rightLabel.select("#NickNameLabel").text("NickName: " + d.NickName)
+            rightLabel.select("#HashLabel").text("Hash: " + d.Hash)
+            rightLabel.select("#BalanceLabel").text("Balance: " + d.Balance)
 
-          rightLabel.attr("visibility", "visible")
-          rightInst.attr("visibility", "hidden")
+            rightLabel.attr("visibility", "visible")
+            d3.selectAll(".rightInst").attr("visibility", "hidden")
         })
         .on("mouseout",function(d){
-          rightLabel.attr("visibility", "hidden")
-          rightInst.attr("visibility", "visible")
+            rightLabel.attr("visibility", "hidden")
+            d3.selectAll(".rightInst").attr("visibility", "visible")
+        })
+        .each(function(d) { d.clicked = false; })
+        .on("click", function(d) {
+            d.clicked = 1 - d.clicked
+            if(d.clicked) {
+                selectCount = selectCount + 1;
+                nodesmap[d.NickName].clicked = true;
+                d3.select(this).classed("selected", true).classed("unselected", false);
+            } else {
+                selectCount = selectCount - 1;
+                nodesmap[d.NickName].clicked = false;
+                d3.select(this).classed("unselected", true).classed("selected", false);
+            }
+            highlightUpdate();
         })
 
     function ticked() {
@@ -145,6 +229,9 @@ d3.json("data.json", function(error, data) {
     var tmpBlockData = {};
     for(var i = 0; i < allLinkData.length; i++) {
         allLinkData[i] = allLinkData[i].map(function(d){
+          if(d.block && d.block != -1) {
+              d.block = d.block / 20;
+          }
           let newTrans = {"source": nodesmap[d.from],
                           "target": nodesmap[d.to],
                           "amount": d.amount,
@@ -168,11 +255,7 @@ d3.json("data.json", function(error, data) {
     var total = 0;
     for(var each in tmpBlockData){
         var name = each, count = tmpBlockData[each];
-        if(name != "undefined" && name != "-1") {
-            blockData.push({"name": String(name/20), "count": count})
-        } else {
-            blockData.push({"name": String(name), "count": count})
-        }
+        blockData.push({"name": String(name), "count": count})
     }
     scaleDown.range([5, 15]).domain([(minData), (maxData)]);
 })
