@@ -1,10 +1,9 @@
 \documentclass[journal, a4paper]{IEEEtran}
 
 \usepackage{graphicx}   
-
 \usepackage{url}        
-
-\usepackage{amsmath} 
+\usepackage{amsmath}    
+\usepackage{hyperref}
 
 
 % Your document starts here!
@@ -14,11 +13,6 @@
 	\title{Bitcoin Blockchain Visualization}
 	\author{Zhiyi Xu, and Ruolan Zeng}
 	\maketitle
-
-% Write abstract here
-\begin{abstract}
-
-\end{abstract}
                                                    
 % Each section begins with a \section{title} command
 \section{Introduction}
@@ -33,33 +27,95 @@
 	\end{figure}
 
 \section{Motivation}
-This is a learning project during which we want to mock and visualize the bitcoin blockchain.
+This is a learning project during which we want to mock and visualize the bitcoin blockchain. Blockchain can be a very abstract concept and takes a relatively longer time for people to understand. In this case, the use of visualization can be very helpful.
 
 \section{Gap}
 
 \section{Problem statement}
 
 \section{Overall design}
+Figure 2 is the initial state of the overall design of our bitcoin blockchain visualization.
+\begin{itemize}
+    \item Time slider: the time range within which transactions and blocks are generated. It can be used to choose the time point by dragging it to the point. You can also use the "Play" button to make it move automatically. And "Pause" it with the same button.
+    \item Right panel: all the bitcoin addresses in the system and the transactions were made by those addresses. Nodes that have transactions happening between them will form subgraphs and be dragged closer.
+    \item Left panel's upper layer: the blockchain
+    \item Left panel's middle layer: detailed information of selected transaction
+    \item Left panel's lower layer: all transactions happening at present time point
+\end{itemize}
 
 \begin{figure}[!hbt]
 		\begin{center}
 		\includegraphics[width=\columnwidth]{overall_design_start.png}
-		\caption{}
+		\caption{Initial state of bitcoin blockchain visualization}
 		\label{fig:overall_design}
 		\end{center}
 	\end{figure}
 
+Figure 3 is the state of bitcoin blockchain visualization at some time point.
+\begin{itemize}
+    \item Time slider: the smallest time interval is 5 minutes.
+    \item Right panel: the color of the nodes demonstrates if it is active at the time
+    \begin{itemize}
+        \item grey: inactive, not involved in any transactions
+        \item orange: active, involved in transactions
+    \end{itemize}
+    The links connect to the nodes that are related to transactions and their thickness demonstrate the transaction amount. The color of the links demonstrates the transaction status
+    \begin{itemize}
+        \item red: confirmed to be invalid transaction and should not been recorded in any block
+        \item green: confirmed to be valid transaction and has been recorded in the latest block
+        \item blue: unconfirmed and unrecorded in any block yet
+    \end{itemize}
+    \item Left panel's upper layer: the blocks in blockchain
+    \begin{itemize}
+        \item block\#: its rank in the blockchain by the time it is generated
+        \item size: number of transactions recorded in this block
+        \item color: dark grey is the color at the time point a block is generated. It will stay light grey after that.
+    \end{itemize}
+    \item Left panel's middle layer: hover the circles below and detail information of selected transaction will show up here. The transaction of selected nodes will also be highlighted in the right panel.
+    \item Left panel's lower layer: circles represent transactions happening at this time point. The size of the circles demonstrates the transaction amount. The color of the circles demonstrates the status of the transactions.
+    \begin{itemize}
+        \item red: confirmed to be invalid transaction and should not been recorded in any block
+        \item green: confirmed to be valid transaction and has been recorded in the latest block
+        \item blue: unconfirmed and unrecorded in any block yet
+    \end{itemize}
+    you can also choose to sort or group the circles with the buttons that offered.
+    \begin{itemize}
+        \item By Status: circles will be grouped by status in order of red(invalid), blue(unrecorded) and green(valid).
+        \item By Amount: circles will be sorted by amount in order of small to large.
+        \item By Time: circles will be sorted by amount In chronological order. 
+    \end{itemize}
+\end{itemize}
+
 \begin{figure}[!hbt]
 		\begin{center}
 		\includegraphics[width=\columnwidth]{overall_design.png}
-		\caption{}
+		\caption{no-real time monitoring of bitcoin blockchain}
 		\label{fig:overall_design}
 		\end{center}
 	\end{figure}
+
 \section{Key intuitions behind our proposed design}
-\subsection{Disjoint Force-Directed Graph}
 \subsection{Blockchain Demo}
+We found an implementation of blockchain in JavaScript(Figure 4). Using this implementation as a base, we plan to mock and visualize the bitcoin blockchain by ourselves. Right now, the implementation required users to create new blocks and setup for different peers. We plan to change it to a format that take in a database and automatically go through all the steps. It?s in details but the data size is small, and it cannot offer users a board view of what transactions are happening behind the blockchain.
+
+\begin{figure}[!hbt]
+		\begin{center}
+		\includegraphics[width=\columnwidth]{blockchaindemo.png}
+		\caption{Blockchain Demo, Link: \href{https://blockchaindemo.io}{https://blockchaindemo.io}}
+		\label{fig:demo}
+		\end{center}
+	\end{figure}
+
 \subsection{Ethereum blockchain visualization}
+We found another live application for bitcoin that is implemented in Javascript(Figure 5). It?s nice visualization but the data size is big and the information is not in details. It offers users a board view of the transactions and blockchain, but give users little information inside each block.
+\begin{figure}[!hbt]
+		\begin{center}
+		\includegraphics[width=\columnwidth]{ethereum.png}
+		\caption{Ethereum blockchain visualization, Link: \href{http://www.ethviewer.live}{http://www.ethviewer.live}}
+		\label{fig:Ethereum blockchain visualization}
+		\end{center}
+	\end{figure}
+
 \section{Key benefits of our proposed design}
 
 \section{Details of our design}
@@ -105,7 +161,6 @@ This is a learning project during which we want to mock and visualize the bitcoi
 
 \section{Future Directions}
 
-\section{Team member attribution}
 
 \begin{thebibliography}{5}
 
@@ -113,7 +168,7 @@ This is a learning project during which we want to mock and visualize the bitcoi
 	\bibitem{HOP96} % Transaction paper
 	J.~Hagenauer, E.~Offer, and L.~Papke. Iterative decoding of binary block
 	and convolutional codes. {\em IEEE Trans. Inform. Theory},
-	vol.~42, no.~2, pp.~429–-445, Mar. 1996.
+	vol.~42, no.~2, pp.~429?-445, Mar. 1996.
 
 \end{thebibliography}
 
