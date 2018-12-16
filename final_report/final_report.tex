@@ -98,7 +98,7 @@ Figure 3 is the state of bitcoin blockchain visualization at some time point.
 
 \section{Key intuitions behind our proposed design}
 \subsection{Blockchain Demo}
-We found an implementation of blockchain in JavaScript(Figure 4). Using this implementation as a base, we plan to mock and visualize the bitcoin blockchain by ourselves. Right now, the implementation required users to create new blocks and setup for different peers. We plan to change it to a format that take in a database and automatically go through all the steps. It?s in details but the data size is small, and it cannot offer users a board view of what transactions are happening behind the blockchain.
+We found an implementation of blockchain in JavaScript(Figure 4). Using this implementation as a base, we are going to mock and visualize the bitcoin blockchain by ourselves. Right now, this implementation required users to enter data, create new blocks and setup for different peers. It?s in details but the data and blocks are added by users themselves, which means that the data size is small. And it cannot offer users a detailed view behind the blockchain, such as what transactions are being generated now. We plan to change it to a format that take in a database and automatically go through all the steps. 
 
 \begin{figure}[!hbt]
 		\begin{center}
@@ -109,7 +109,7 @@ We found an implementation of blockchain in JavaScript(Figure 4). Using this imp
 	\end{figure}
 
 \subsection{Ethereum blockchain visualization}
-We found another live application for bitcoin that is implemented in Javascript(Figure 5). It?s nice visualization but the data size is big and the information is not in details. It offers users a board view of the transactions and blockchain, but give users little information inside each block.
+We found another live application for bitcoin that is implemented in Javascript(Figure 5). It?s nice real-time visualization but the data size is very big and the information is not in details. Besides, Users cannot stop it to learn details by themselves because it's real-time. It offers users a board view of the transactions and blockchain, but give users little detail information which makes it hard to understand what is going on.
 \begin{figure}[!hbt]
 		\begin{center}
 		\includegraphics[width=\columnwidth]{ethereum.png}
@@ -119,6 +119,11 @@ We found another live application for bitcoin that is implemented in Javascript(
 	\end{figure}
 
 \section{Key benefits of our proposed design}
+We decide to combine the advantages of the two visualizations mentioned above.
+\begin{itemize}
+    \item Instead of letting users adding data or using real-time data, we will use our own non-real-time dataset, so the size of data would not be too big or too small for users to accept.
+    \item Instead of having only one view, we will have two panels, one showing transactions and detail information, the other showing the blockchain and detail information.
+\end{itemize}
 
 \section{Details of our design}
 \subsection{Transactions}
@@ -182,7 +187,7 @@ Figure 10 shows the interaction of left and right panels. The nodes you select o
 	\end{figure}
 
 \section{Contributions}
-Zhiyi ; Ruolan.
+Zhiyi ; Ruolan contributed in writing progress and final report; preparing backend data, such as data for nodes, transaction and blocks.
 \section{Conclusions}
 
 \section{Future Directions}
@@ -191,17 +196,19 @@ Despite Bitcoin?s potential, blockchain protocols face a significant scalability
     \item Increasing block size improves throughput, but the resulting bigger blocks take longer to propagate in the network.
     \item Reducing the block interval reduces latency, but leads to instability where the system is in disagreement and the blockchain is subject to reorganization.
 \end{itemize}
-We want to learn and try to implement Bitcoin-NG (Next Generation), a new blockchain protocol designed to scale, presented in \text{Bitcoin-NG: A Scalable Blockchain Protocol}. It is a Byzantine fault tolerant blockchain protocol that is robust to extreme churn and shares the same trust model as Bitcoin. Finally, we want to compare the transaction frequency, consensus latency, fairness, mining power utilization, time to win and time to prune of Bitcoin and Bitcoin-NG at the same block frequency or block size to see if Bitcoin-NG can reduce latency and increase throughput, and whether it is possible to improve the scalability of blockchain protocols to the point where the consensus latency is limited solely by the network diameter and the throughput bottleneck lies only in node processing power.
+We want to learn and try to implement Bitcoin-NG (Next Generation), a new blockchain protocol designed to scale, presented in \text{Bitcoin-NG: A Scalable Blockchain Protocol}\cite{eyal2016bitcoin}. It is a Byzantine fault tolerant blockchain protocol that is robust to extreme churn and shares the same trust model as Bitcoin. Finally, we want to compare the transaction frequency, consensus latency, fairness, mining power utilization, time to win and time to prune of Bitcoin and Bitcoin-NG at the same block frequency or block size to see if Bitcoin-NG can reduce latency and increase throughput, and whether it is possible to improve the scalability of blockchain protocols to the point where the consensus latency is limited solely by the network diameter and the throughput bottleneck lies only in node processing power.
 
-\begin{thebibliography}{5}
+%\begin{thebibliography}{5}
 
 	%Each item starts with a \bibitem{reference} command and the details thereafter.
-	\bibitem{HOP96} % Transaction paper
-	J.~Hagenauer, E.~Offer, and L.~Papke. Iterative decoding of binary block
-	and convolutional codes. {\em IEEE Trans. Inform. Theory},
-	vol.~42, no.~2, pp.~429?-445, Mar. 1996.
+	%\bibitem{HOP96} % Transaction paper
+	%J.~Hagenauer, E.~Offer, and L.~Papke. Iterative decoding of binary block
+	%and convolutional codes. {\em IEEE Trans. Inform. Theory},
+	%vol.~42, no.~2, pp.~429?-445, Mar. 1996.
 
-\end{thebibliography}
+%\end{thebibliography}
 
 % Your document ends here!
+\bibliographystyle{unsrt}
+\bibliography{ref}
 \end{document}
