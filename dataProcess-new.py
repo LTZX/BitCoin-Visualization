@@ -20,7 +20,7 @@ for each in data:
         current = []
     else:
         for trans in each:
-            newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED", "block": trans["block"]}
+            newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED", "block": -1}
             current.append(newTrans)
         result.append(copy.deepcopy(current))
     i += 1
