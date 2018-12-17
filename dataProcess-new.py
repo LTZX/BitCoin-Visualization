@@ -15,7 +15,7 @@ for each in data:
         current = []
         for j in range(i - 3, i + 1):
             for trans in data[j]:
-                if trans["block"] != -1:
+                if trans["status"] == "VALID":
                     trans["block"] = i/4
                 current.append(trans)
         result.append(copy.deepcopy(current))
