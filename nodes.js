@@ -229,9 +229,9 @@ d3.json("data.json", function(error, data) {
     var tmpBlockData = {};
     for(var i = 0; i < allLinkData.length; i++) {
         allLinkData[i] = allLinkData[i].map(function(d){
-          if(d.block && d.block != -1) {
-              d.block = d.block / 20;
-          }
+          // if(d.block && d.block != -1) {
+          //     d.block = d.block / 20;
+          // }
           let newTrans = {"source": nodesmap[d.from],
                           "target": nodesmap[d.to],
                           "amount": d.amount,
