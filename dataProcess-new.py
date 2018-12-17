@@ -17,12 +17,14 @@ for each in data:
             for trans in data[j]:
                 if trans["status"] == "VALID":
                     trans["block"] = i/4
+                if trans["status"] == "UNRECORDED":
+                    trans["block"] = "undefined"
                 current.append(trans)
         result.append(copy.deepcopy(current))
         current = []
     else:
         for trans in each:
-            newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED", "block": -1}
+            newTrans = {"from": trans["from"], "to": trans["to"], "time": trans["time"], "amount": trans["amount"], "status": "UNRECORDED", "block": "undefined"}
             current.append(newTrans)
         result.append(copy.deepcopy(current))
     i += 1

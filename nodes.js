@@ -238,10 +238,12 @@ d3.json("data.json", function(error, data) {
                           "status": d.status,
                           "time": d.time,
                           "block": d.block};
-          if(!tmpBlockData[newTrans.block]) {
-              tmpBlockData[newTrans.block] = 0;
+          if(newTrans["status"] == "VALID") {
+              if(!tmpBlockData[newTrans.block]) {
+                  tmpBlockData[newTrans.block] = 0;
+              }
+              tmpBlockData[newTrans.block] = tmpBlockData[newTrans.block] + 1
           }
-          tmpBlockData[newTrans.block] = tmpBlockData[newTrans.block] + 1
 
           return newTrans;
         })
