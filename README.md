@@ -34,7 +34,7 @@ The transactions are unrecorded initially. When a valid block is created, the co
 ## Nodes Visual Angle (Right Panel)
 The right panel shows all the bit coin addresses (nodes), which is similar to the concept of account or user in general cases, that in the system and the transactions were made by those addresses.  
 
-Under this visual angle, if there is a transaction between two addresses, a link, which demonstrates a transaction, will be added between two nodes. The color of the link shows the status of the transaction, which is the same as the transaction nodes on the left panel.  
+Under this visual angle, if there is a transaction between two addresses, a link, which demonstrates a transaction, will be added between two nodes. All the addresses that made any transaction will be marked as activated and filled with orange. The color of the link shows the status of the transaction, which is the same as the transaction nodes on the left panel.  
 
 If hover the nodes in the graph, the information of this bit coin address will be presented.  
 
