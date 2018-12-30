@@ -3,7 +3,7 @@
 This is a visualization for bitcoin transactions. The dashboard has three parts: the block visual angle on the left, the node visual angle on the right, and time slider under the above two part.
 
 <div style="text-align:center">
-    <img src="/images/mainView.png" width="360"/><img src="/images/mainViewWithNode.png" width="360"/>
+    <img src="/images/mainView.png" width="50%"/><img src="/images/mainViewWithNode.png" width="50%"/>
 </div>
 
 ## Time Slider
@@ -21,7 +21,7 @@ The block area shows four most recent blocks that is created and the number of t
 The transactions are unrecorded initially. When a valid block is created, the color of the nodes will change. The new block will be highlighted and added to the blockchain above. Users can always sort the transaction nodes by amount, status or time.
 
 <div style="text-align:center">
-    <img src="/images/byAmount.png" width="330"/><img src="/images/byStatus.png" width="360"/>
+    <img src="/images/byAmount.png" width="48%"/><img src="/images/byStatus.png" width="52%"/>
 </div>
 
 ### Functions
